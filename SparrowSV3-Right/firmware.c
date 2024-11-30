@@ -38,6 +38,7 @@ void init_i2c_slave(uint8_t address)
 	// https://github.com/cnlohr/ch32v003fun/blob/master/examples/i2c_slave/i2c_slave.h
 	RCC->CFGR0 &= ~(0x1F << 11);
 
+	RCC->APB2PCENR |= RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOC | RCC_APB2Periph_GPIOD | RCC_APB2Periph_AFIO;
 	RCC->APB1PCENR |= RCC_APB1Periph_I2C1;
 
 	// PC1 is SDA, 10MHz Output, alt func, open-drain
@@ -97,9 +98,7 @@ void I2C1_EV_IRQHandler(void)
 	STAR1 = I2C1->STAR1;
 	STAR2 = I2C1->STAR2;
 
-#ifdef FUNCONF_USE_UARTPRINTF
-	printf("EV STAR1: 0x%04x STAR2: 0x%04x\r\n", STAR1, STAR2);
-#endif
+	// printf("EV STAR1: 0x%04x STAR2: 0x%04x\r\n", STAR1, STAR2);
 
 	I2C1->CTLR1 |= I2C_CTLR1_ACK;
 
@@ -181,9 +180,7 @@ void I2C1_ER_IRQHandler(void)
 {
 	uint16_t STAR1 = I2C1->STAR1;
 
-#ifdef FUNCONF_USE_UARTPRINTF
-	printf("ER STAR1: 0x%04x\r\n", STAR1);
-#endif
+	// printf("ER STAR1: 0x%04x\r\n", STAR1);
 
 	if (STAR1 & I2C_STAR1_BERR)			  // 0x0100
 	{									  // Bus error
@@ -250,7 +247,7 @@ void main_loop()
 				GPIO_digitalWrite_0(COL_PINS[i]);
 			}
 		}
-		Delay_Us(100);
+		Delay_Ms(1);
 
 		uint8_t value = 0;
 		for (int r = 0; r < 5; r++)
@@ -261,6 +258,8 @@ void main_loop()
 
 		i2c_registers[BASE_REGISTER_ADDRESS + c] = value;
 	}
+	// printf("%x %x %x %x %x %x\r\n", i2c_registers[0], i2c_registers[1], i2c_registers[2], i2c_registers[3], i2c_registers[4], i2c_registers[5]);
+	Delay_Ms(1);
 }
 
 int main()
@@ -269,8 +268,8 @@ int main()
 	funGpioInitAll();
 
 	setup();
-	// printf("Start!");
+	// printf("Start!\r\n");
 
-	for (;;)
+	while (1)
 		main_loop();
 }
