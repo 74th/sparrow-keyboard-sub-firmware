@@ -22,6 +22,9 @@
 uint16_t COL_PINS[6] = {COL1, COL2, COL3, COL4, COL5, COL6};
 uint16_t ROW_PINS[5] = {ROW1, ROW2, ROW3, ROW4, ROW5};
 
+#define COLS_SIZE sizeof(COL_PINS)
+#define ROWS_SIZE sizeof(ROW_PINS)
+
 volatile uint8_t i2c_registers[32] = {0x00};
 
 typedef struct
@@ -234,6 +237,7 @@ void setup()
 
 void main_loop()
 {
+	uint8_t buf[ROWS_SIZE] = {0};
 	for (int c = 0; c < 6; c++)
 	{
 		for (int i = 0; i < 6; i++)
@@ -253,11 +257,12 @@ void main_loop()
 		for (int r = 0; r < 5; r++)
 		{
 			uint8_t v = GPIO_digitalRead(ROW_PINS[r]);
-			value |= v << r;
+			buf[r] |= v << c;
 		}
-
-		i2c_registers[BASE_REGISTER_ADDRESS + c] = value;
 	}
+
+	memcpy(i2c_registers, buf, ROWS_SIZE);
+
 	// printf("%x %x %x %x %x %x\r\n", i2c_registers[0], i2c_registers[1], i2c_registers[2], i2c_registers[3], i2c_registers[4], i2c_registers[5]);
 	Delay_Ms(1);
 }

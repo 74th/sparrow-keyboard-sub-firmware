@@ -9,7 +9,7 @@
 #define I2C_SDA 12
 #define I2C_SCL 13
 
-#define COL_NUM 6
+#define ROWS_NUM 5
 
 #define SLEEP_MS 100
 #define LOOP_MS 300
@@ -27,17 +27,17 @@ void test_read()
 {
     // printf("test read\r\n");
     uint8_t buf[1] = {BASE_REGISTER_ADDRESS};
-    uint8_t rbuf[COL_NUM] = {1, 2, 3, 4, 5, 6};
+    uint8_t rbuf[ROWS_NUM] = {1, 2, 3, 4, 5};
     i2c_write_blocking(I2C_PORT, I2C_ADDRESS, buf, 1, false);
-    i2c_read_blocking(I2C_PORT, I2C_ADDRESS, rbuf, COL_NUM, false);
+    i2c_read_blocking(I2C_PORT, I2C_ADDRESS, rbuf, ROWS_NUM, false);
 
-    // for (int i = 0; i < COL_NUM; i++)
+    // for (int i = 0; i < ROWS_NUM; i++)
     // {
     //     printf("COL%d: ", i);
     //     print_bits(rbuf[i]);
     //     printf("\r\n");
     // }
-    printf("%x %x %x %x %x %x\r\n", rbuf[0], rbuf[1], rbuf[2], rbuf[3], rbuf[4], rbuf[5]);
+    printf("%x %x %x %x %x\r\n", rbuf[0], rbuf[1], rbuf[2], rbuf[3], rbuf[4]);
 }
 
 void init()
