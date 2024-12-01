@@ -6,8 +6,8 @@
 #define BASE_REGISTER_ADDRESS 0x00
 
 #define I2C_PORT i2c0
-#define I2C_SDA 4
-#define I2C_SCL 5
+#define I2C_SDA 12
+#define I2C_SCL 13
 
 #define COL_NUM 6
 
