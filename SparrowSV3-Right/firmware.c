@@ -3,12 +3,13 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-#define COL1 GPIOv_from_PORT_PIN(GPIO_port_D, 4)
-#define COL2 GPIOv_from_PORT_PIN(GPIO_port_D, 5)
-#define COL3 GPIOv_from_PORT_PIN(GPIO_port_D, 6)
-#define COL4 GPIOv_from_PORT_PIN(GPIO_port_D, 3)
-#define COL5 GPIOv_from_PORT_PIN(GPIO_port_D, 2)
-#define COL6 GPIOv_from_PORT_PIN(GPIO_port_C, 7)
+#define COL1 GPIOv_from_PORT_PIN(GPIO_port_A, 2)
+#define COL2 GPIOv_from_PORT_PIN(GPIO_port_D, 4)
+#define COL3 GPIOv_from_PORT_PIN(GPIO_port_D, 5)
+#define COL4 GPIOv_from_PORT_PIN(GPIO_port_D, 6)
+#define COL5 GPIOv_from_PORT_PIN(GPIO_port_D, 3)
+#define COL6 GPIOv_from_PORT_PIN(GPIO_port_D, 2)
+#define COL7 GPIOv_from_PORT_PIN(GPIO_port_C, 7)
 
 #define ROW1 GPIOv_from_PORT_PIN(GPIO_port_C, 3)
 #define ROW2 GPIOv_from_PORT_PIN(GPIO_port_C, 4)
@@ -19,7 +20,7 @@
 #define I2C_ADDRESS 0x20
 #define BASE_REGISTER_ADDRESS 0x00
 
-uint16_t COL_PINS[6] = {COL1, COL2, COL3, COL4, COL5, COL6};
+uint16_t COL_PINS[7] = {COL1, COL2, COL3, COL4, COL5, COL6, COL7};
 uint16_t ROW_PINS[5] = {ROW1, ROW2, ROW3, ROW4, ROW5};
 
 #define COLS_SIZE sizeof(COL_PINS)
@@ -215,12 +216,12 @@ void setup()
 	GPIO_port_enable(GPIO_port_C);
 	GPIO_port_enable(GPIO_port_D);
 
-	for (int i = 0; i < 6; i++)
+	for (int i = 0; i < COLS_SIZE; i++)
 	{
 		GPIO_pinMode(COL_PINS[i], GPIO_pinMode_O_pushPull, GPIO_Speed_10MHz);
 	}
 
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < ROWS_SIZE; i++)
 	{
 		GPIO_pinMode(ROW_PINS[i], GPIO_pinMode_I_pullDown, GPIO_Speed_10MHz);
 	}
@@ -238,9 +239,9 @@ void setup()
 void main_loop()
 {
 	uint8_t buf[ROWS_SIZE] = {0};
-	for (int c = 0; c < 6; c++)
+	for (int c = 0; c < COLS_SIZE; c++)
 	{
-		for (int i = 0; i < 6; i++)
+		for (int i = 0; i < COLS_SIZE; i++)
 		{
 			if (i == c)
 			{
@@ -254,7 +255,7 @@ void main_loop()
 		Delay_Ms(1);
 
 		uint8_t value = 0;
-		for (int r = 0; r < 5; r++)
+		for (int r = 0; r < ROWS_SIZE; r++)
 		{
 			uint8_t v = GPIO_digitalRead(ROW_PINS[r]);
 			buf[r] |= v << c;
