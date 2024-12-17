@@ -20,11 +20,11 @@
 #define I2C_ADDRESS 0x20
 #define BASE_REGISTER_ADDRESS 0x00
 
-uint16_t COL_PINS[7] = {COL1, COL2, COL3, COL4, COL5, COL6, COL7};
-uint16_t ROW_PINS[5] = {ROW1, ROW2, ROW3, ROW4, ROW5};
+#define COLS_SIZE 7
+#define ROWS_SIZE 5
 
-#define COLS_SIZE sizeof(COL_PINS)
-#define ROWS_SIZE sizeof(ROW_PINS)
+uint16_t COL_PINS[COLS_SIZE] = {COL1, COL2, COL3, COL4, COL5, COL6, COL7};
+uint16_t ROW_PINS[ROWS_SIZE] = {ROW1, ROW2, ROW3, ROW4, ROW5};
 
 volatile uint8_t i2c_registers[32] = {0x00};
 
@@ -264,7 +264,7 @@ void main_loop()
 
 	memcpy(i2c_registers, buf, ROWS_SIZE);
 
-	// printf("%x %x %x %x %x %x\r\n", i2c_registers[0], i2c_registers[1], i2c_registers[2], i2c_registers[3], i2c_registers[4], i2c_registers[5]);
+	// printf("%x %x %x %x %x\r\n", i2c_registers[0], i2c_registers[1], i2c_registers[2], i2c_registers[3], i2c_registers[4]);
 	Delay_Ms(1);
 }
 
