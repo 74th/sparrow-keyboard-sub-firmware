@@ -153,6 +153,9 @@ void I2C1_EV_IRQHandler(void)
 			// printf("TXE write event: pos:0x%x v:0x%x\r\n", pos, v);
 			I2C1->DATAR = v;
 			i2c_scan_length++;
+
+			// 送信の度にWatch Dog Timerをリセット
+			IWDG->CTLR = CTLR_KEY_Reload;
 		}
 	}
 
@@ -216,6 +219,12 @@ void setup()
 	{
 		i2c_registers[i] = 0x00;
 	}
+
+	// Independent Watch Dog Timerを2sのカウンタでセット
+	IWDG->CTLR = IWDG_WriteAccess_Enable;
+	IWDG->PSCR = IWDG_Prescaler_128;
+	IWDG->RLDR = 2000 & 0xfff;
+	IWDG->CTLR = CTLR_KEY_Enable;
 
 	Delay_Ms(1);
 }
