@@ -226,7 +226,10 @@ void main_loop()
 	for (int c = 0; c < COLS_SIZE; c++)
 	{
 		uint8_t v = GPIO_digitalRead(COL_PINS[c]);
-		buf |= v << c;
+		if (v == 0)
+		{
+			buf |= 1 << c;
+		}
 	}
 
 	i2c_registers[0] = buf;
