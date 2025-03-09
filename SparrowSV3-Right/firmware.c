@@ -1,4 +1,4 @@
-#include "ch32v003fun.h"
+#include "ch32fun.h"
 #include "ch32v003_GPIO_branchless.h"
 #include <stdio.h>
 #include <stdbool.h>
