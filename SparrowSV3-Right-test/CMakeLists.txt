@@ -37,6 +37,8 @@ pico_sdk_init()
 
 add_executable(test-firmware test-firmware.c )
 
+target_compile_definitions(test-firmware PRIVATE PICO_XOSC_STARTUP_DELAY_MULTIPLIER=64)
+
 pico_set_program_name(test-firmware "test-firmware")
 pico_set_program_version(test-firmware "0.1")
 
