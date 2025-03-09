@@ -2,7 +2,8 @@
 #include "pico/stdlib.h"
 #include "hardware/i2c.h"
 
-#define I2C_ADDRESS 0x20
+// #define I2C_ADDRESS 0x20
+#define I2C_ADDRESS 0x21
 #define BASE_REGISTER_ADDRESS 0x00
 
 #define I2C_PORT i2c0
